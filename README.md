@@ -83,16 +83,16 @@
 ## Architecture
 
 ```mermaid
-flowchart LR
-    subgraph Clients
-        WEB["Admin panel<br/>Vue 3 + Vite SPA"]
-        APP["Drive Mentor<br/>Flutter app (Android / iOS)"]
-    end
+flowchart TB
+    WEB["Admin panel<br/>Vue 3 + Vite SPA"]
+    APP["Drive Mentor<br/>Flutter app (Android / iOS)"]
+    GHA["GitHub Actions<br/>build · test · deploy"]
 
     subgraph Server["VPS (Docker)"]
         FE["nginx container<br/>static SPA + /api reverse proxy"]
         subgraph API["NestJS API · /api/v1"]
-            AUTH["Auth<br/>JWT access + refresh, RBAC"]
+            HTTP["HTTP layer<br/>JWT guard · RBAC · validation · interceptors"]
+            AUTH["Auth<br/>JWT access + refresh"]
             DOMAIN["Domain modules<br/>schools · instructors · students<br/>vehicles · appointments"]
             MONEY["Money modules<br/>payouts · expenses · reports"]
             EVT(["Event emitter"])
@@ -102,17 +102,19 @@ flowchart LR
     end
 
     FCM["Firebase Cloud Messaging"]
-    GHA["GitHub Actions<br/>build · test · deploy"]
 
     WEB -->|HTTPS| FE
-    FE -->|/api| API
-    APP -->|HTTPS REST| API
-    AUTH --> DB
-    DOMAIN --> DB
-    MONEY --> DB
+    FE -->|/api| HTTP
+    APP -->|HTTPS REST| HTTP
+    HTTP --> AUTH
+    HTTP --> DOMAIN
+    HTTP --> MONEY
     DOMAIN -- booking events --> EVT
     MONEY -- payout / expense events --> EVT
     EVT --> NOTIF
+    AUTH --> DB
+    DOMAIN --> DB
+    MONEY --> DB
     NOTIF --> DB
     NOTIF --> FCM
     FCM -. push .-> APP
