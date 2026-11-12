@@ -83,35 +83,47 @@
 **Drive Mentor** is the Flutter app for the people who work in the school day to day. After picking a role on the start screen, a driving instructor gets their lessons, schedule and money, and a school administrator gets the school's dashboard, staff, bookings and approvals. Both talk to the same NestJS API as the web panel.
 
 <p align="center">
-  <img src="docs/screenshots/mobile-app/role-selection.png" width="200" alt="Drive Mentor start screen where the user picks Driving Instructor or School Administrator">
-  <img src="docs/screenshots/mobile-app/instructor-dashboard.png" width="200" alt="Instructor dashboard with today's lesson count, net balance with the school, what each side owes, total paid out, and weekly and monthly earnings">
-  <img src="docs/screenshots/mobile-app/instructor-schedule-calendar.png" width="200" alt="Instructor month calendar with coloured lesson dots per day and today's lessons marked completed, in progress or pending">
-  <img src="docs/screenshots/mobile-app/instructor-bookings.png" width="200" alt="Instructor bookings list with name search and status filter chips, showing lesson type, date, time, location and price">
+  <img src="docs/screenshots/mobile-app/cover-trio.png" width="100%" alt="Three Drive Mentor screens fanned out on a green background: the school admin dashboard in the centre, the instructor month calendar with today's lessons on the left and the admin revenue report on the right">
 </p>
 <p align="center">
-  <img src="docs/screenshots/mobile-app/booking-details.png" width="200" alt="Booking details with the student, call and message buttons, lesson time and duration, payment status, price, lesson type, and Start Lesson and Cancel Lesson buttons">
-  <img src="docs/screenshots/mobile-app/instructor-earnings-report.png" width="200" alt="Instructor earnings report with weekly, monthly and custom ranges, total earnings, bookings, completed and cancelled tiles and a daily earnings bar chart">
-  <img src="docs/screenshots/mobile-app/instructor-expenses.png" width="200" alt="Instructor expense claims by category (fuel, materials, phone, vehicle maintenance) with pending, approved and reimbursed statuses">
-  <img src="docs/screenshots/mobile-app/instructor-payouts-settlement.png" width="200" alt="Instructor payouts screen with school-owes, instructor-owes, net and pending-settlement amounts, payout history and a Settle button">
+  <img src="docs/screenshots/mobile-app/framed/role-selection.png" width="31%" alt="Drive Mentor start screen where the user picks Driving Instructor or School Administrator">
+  <img src="docs/screenshots/mobile-app/framed/instructor-dashboard.png" width="31%" alt="Instructor dashboard with today's lesson count, net balance with the school, what each side owes, total paid out, and weekly and monthly earnings">
+  <img src="docs/screenshots/mobile-app/framed/instructor-schedule-calendar.png" width="31%" alt="Instructor month calendar with coloured lesson dots per day and today's lessons marked completed, in progress or pending">
 </p>
 <p align="center">
-  <img src="docs/screenshots/mobile-app/instructor-notifications.png" width="200" alt="In-app notification inbox with lesson assigned, rescheduled, cancelled and payout approved messages and a Mark all read action">
-  <img src="docs/screenshots/mobile-app/admin-dashboard.png" width="200" alt="School admin dashboard with instructor and student counts, all-time revenue, money owed in each direction, total paid out and net balance">
-  <img src="docs/screenshots/mobile-app/admin-instructors.png" width="200" alt="Admin instructor list with search, active and inactive filters, license numbers and lesson counts; one email is masked">
-  <img src="docs/screenshots/mobile-app/admin-instructor-report.png" width="200" alt="Per-instructor report with overview, schedule and earnings tabs, balances, total paid, contact details, license and commission rate; the phone number is masked">
+  <img src="docs/screenshots/mobile-app/framed/instructor-bookings.png" width="31%" alt="Instructor bookings list with name search and status filter chips, showing lesson type, date, time, location and price">
+  <img src="docs/screenshots/mobile-app/framed/booking-details.png" width="31%" alt="Booking details with the student, call and message buttons, lesson time and duration, payment status, price, lesson type, and Start Lesson and Cancel Lesson buttons">
+  <img src="docs/screenshots/mobile-app/framed/instructor-earnings-report.png" width="31%" alt="Instructor earnings report with weekly, monthly and custom ranges, total earnings, bookings, completed and cancelled tiles and a daily earnings bar chart">
 </p>
 <p align="center">
-  <img src="docs/screenshots/mobile-app/admin-bookings.png" width="200" alt="School-wide bookings for admins with student, teacher, lesson type, time, location and price">
-  <img src="docs/screenshots/mobile-app/admin-revenue-report.png" width="200" alt="Admin revenue report with total revenue, bookings, completed and cancelled counts and a revenue trend chart">
-  <img src="docs/screenshots/mobile-app/admin-vehicles.png" width="200" alt="Vehicles list with status filters (active, inactive, maintenance) and type filters (light vehicle, motorcycle, heavy vehicle)">
-  <img src="docs/screenshots/mobile-app/admin-expense-approval.png" width="200" alt="Admin expense detail for a pending fuel claim with Reject and Approve buttons">
+  <img src="docs/screenshots/mobile-app/framed/instructor-expenses.png" width="31%" alt="Instructor expense claims by category (fuel, materials, phone, vehicle maintenance) with pending, approved and reimbursed statuses">
+  <img src="docs/screenshots/mobile-app/framed/instructor-payouts-settlement.png" width="31%" alt="Instructor payouts screen with school-owes, instructor-owes, net and pending-settlement amounts, payout history and a Settle button">
+  <img src="docs/screenshots/mobile-app/framed/instructor-notifications.png" width="31%" alt="In-app notification inbox with lesson assigned, rescheduled and cancelled messages and a Mark all read action">
 </p>
 <p align="center">
-  <img src="docs/screenshots/mobile-app/schedule-light-theme.png" width="200" alt="Instructor schedule calendar in the light theme">
-  <img src="docs/screenshots/mobile-app/admin-reports-light-theme.png" width="200" alt="Admin revenue report in the light theme">
+  <img src="docs/screenshots/mobile-app/framed/admin-dashboard.png" width="31%" alt="School admin dashboard with instructor and student counts, all-time revenue, money owed in each direction, total paid out and net balance">
+  <img src="docs/screenshots/mobile-app/framed/admin-instructors.png" width="31%" alt="Admin instructor list with search, active and inactive filters, license numbers and lesson counts; one email is masked">
+  <img src="docs/screenshots/mobile-app/framed/admin-instructor-report.png" width="31%" alt="Per-instructor report with overview, schedule and earnings tabs, balances, total paid, contact details, license and commission rate; the phone number is masked">
+</p>
+<p align="center">
+  <img src="docs/screenshots/mobile-app/framed/admin-bookings.png" width="31%" alt="School-wide bookings for admins with student, teacher, lesson type, time, location and price">
+  <img src="docs/screenshots/mobile-app/framed/admin-revenue-report.png" width="31%" alt="Admin revenue report with total revenue, bookings, completed and cancelled counts and a revenue trend chart">
+  <img src="docs/screenshots/mobile-app/framed/admin-vehicles.png" width="31%" alt="Vehicles list with status filters (active, inactive, maintenance) and type filters (light vehicle, motorcycle, heavy vehicle)">
+</p>
+<p align="center">
+  <img src="docs/screenshots/mobile-app/framed/admin-expense-approval.png" width="31%" alt="Admin expense detail for a pending fuel claim with Reject and Approve buttons">
+  <img src="docs/screenshots/mobile-app/framed/schedule-light-theme.png" width="31%" alt="Instructor schedule calendar in the light theme">
+  <img src="docs/screenshots/mobile-app/framed/admin-reports-light-theme.png" width="31%" alt="Admin revenue report in the light theme">
 </p>
 
-<sub>These screens are rendered from the Flutter codebase in a phone viewport: the real app compiled for Flutter web and captured in headless Chrome at 390×844 (3x), not on a device or emulator. Firebase push setup is skipped in that build because it has no web Firebase config. Every screen loads live data from a throwaway copy of the API and database seeded with invented demo data (school, people, phone numbers and plates), never production. One instructor email that matches a seed login and one demo phone number are masked. Some screens show "$" and others "AED" because that is how the app currently formats amounts.</sub>
+**Store-style previews**
+
+<p align="center">
+  <img src="docs/screenshots/mobile-app/cards/card-1-schedule.png" width="31%" alt="Store-style preview card headed 'Every lesson, at a glance' showing the instructor month calendar with today's lessons and their status">
+  <img src="docs/screenshots/mobile-app/cards/card-2-payouts.png" width="31%" alt="Store-style preview card headed 'Know who owes whom' showing the instructor payouts screen with balances and cash settlements with the school">
+</p>
+
+<sub>These screens are rendered from the Flutter codebase in a phone viewport: the real app compiled for Flutter web and captured in headless Chrome at 390×844 (3x), not on a device or emulator, then placed in a drawn phone frame (the 9:41 status bar and home indicator are part of the frame, not the app). Firebase push setup is skipped in that build because it has no web Firebase config. Every screen loads live data from a throwaway copy of the API and database seeded with invented demo data (school, people, phone numbers and plates), never production. One instructor email that matches a seed login and one demo phone number are masked, and one notification whose text came from the backend with a different currency format was cut from the inbox capture.</sub>
 
 ### What it does
 
