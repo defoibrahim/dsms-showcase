@@ -76,16 +76,84 @@
 - Earnings reports for each instructor and each school.
 
 **Mobile app (Flutter, "Drive Mentor")**
-- Instructor screens: dashboard, schedule calendar, bookings, create and edit appointments, expenses, payouts and settlements, reports with charts.
-- School admin screens: dashboard, bookings, instructors, vehicles, expenses, payouts, reports.
-- Push notifications through FCM, plus an in-app notification inbox. The API keeps a push on/off setting for each category (bookings, payouts, expenses, status changes).
+- Instructor and school-admin apps in one Flutter codebase, with push notifications. See [Mobile app (Flutter)](#mobile-app-flutter) below for screens, features and stack.
+
+## Mobile app (Flutter)
+
+**Drive Mentor** is the Flutter app for the people who work in the school day to day. After picking a role on the start screen, a driving instructor gets their lessons, schedule and money, and a school administrator gets the school's dashboard, staff, bookings and approvals. Both talk to the same NestJS API as the web panel.
+
+<p align="center">
+  <img src="docs/screenshots/mobile-app/role-selection.png" width="200" alt="Drive Mentor start screen where the user picks Driving Instructor or School Administrator">
+  <img src="docs/screenshots/mobile-app/instructor-dashboard.png" width="200" alt="Instructor dashboard with today's lesson count, net balance with the school, what each side owes, total paid out, and weekly and monthly earnings">
+  <img src="docs/screenshots/mobile-app/instructor-schedule-calendar.png" width="200" alt="Instructor month calendar with coloured lesson dots per day and today's lessons marked completed, in progress or pending">
+  <img src="docs/screenshots/mobile-app/instructor-bookings.png" width="200" alt="Instructor bookings list with name search and status filter chips, showing lesson type, date, time, location and price">
+</p>
+<p align="center">
+  <img src="docs/screenshots/mobile-app/booking-details.png" width="200" alt="Booking details with the student, call and message buttons, lesson time and duration, payment status, price, lesson type, and Start Lesson and Cancel Lesson buttons">
+  <img src="docs/screenshots/mobile-app/instructor-earnings-report.png" width="200" alt="Instructor earnings report with weekly, monthly and custom ranges, total earnings, bookings, completed and cancelled tiles and a daily earnings bar chart">
+  <img src="docs/screenshots/mobile-app/instructor-expenses.png" width="200" alt="Instructor expense claims by category (fuel, materials, phone, vehicle maintenance) with pending, approved and reimbursed statuses">
+  <img src="docs/screenshots/mobile-app/instructor-payouts-settlement.png" width="200" alt="Instructor payouts screen with school-owes, instructor-owes, net and pending-settlement amounts, payout history and a Settle button">
+</p>
+<p align="center">
+  <img src="docs/screenshots/mobile-app/instructor-notifications.png" width="200" alt="In-app notification inbox with lesson assigned, rescheduled, cancelled and payout approved messages and a Mark all read action">
+  <img src="docs/screenshots/mobile-app/admin-dashboard.png" width="200" alt="School admin dashboard with instructor and student counts, all-time revenue, money owed in each direction, total paid out and net balance">
+  <img src="docs/screenshots/mobile-app/admin-instructors.png" width="200" alt="Admin instructor list with search, active and inactive filters, license numbers and lesson counts; one email is masked">
+  <img src="docs/screenshots/mobile-app/admin-instructor-report.png" width="200" alt="Per-instructor report with overview, schedule and earnings tabs, balances, total paid, contact details, license and commission rate; the phone number is masked">
+</p>
+<p align="center">
+  <img src="docs/screenshots/mobile-app/admin-bookings.png" width="200" alt="School-wide bookings for admins with student, teacher, lesson type, time, location and price">
+  <img src="docs/screenshots/mobile-app/admin-revenue-report.png" width="200" alt="Admin revenue report with total revenue, bookings, completed and cancelled counts and a revenue trend chart">
+  <img src="docs/screenshots/mobile-app/admin-vehicles.png" width="200" alt="Vehicles list with status filters (active, inactive, maintenance) and type filters (light vehicle, motorcycle, heavy vehicle)">
+  <img src="docs/screenshots/mobile-app/admin-expense-approval.png" width="200" alt="Admin expense detail for a pending fuel claim with Reject and Approve buttons">
+</p>
+<p align="center">
+  <img src="docs/screenshots/mobile-app/schedule-light-theme.png" width="200" alt="Instructor schedule calendar in the light theme">
+  <img src="docs/screenshots/mobile-app/admin-reports-light-theme.png" width="200" alt="Admin revenue report in the light theme">
+</p>
+
+<sub>These screens are rendered from the Flutter codebase in a phone viewport: the real app compiled for Flutter web and captured in headless Chrome at 390×844 (3x), not on a device or emulator. Firebase push setup is skipped in that build because it has no web Firebase config. Every screen loads live data from a throwaway copy of the API and database seeded with invented demo data (school, people, phone numbers and plates), never production. One instructor email that matches a seed login and one demo phone number are masked. Some screens show "$" and others "AED" because that is how the app currently formats amounts.</sub>
+
+### What it does
+
+**Instructor**
+- Dashboard with today's lessons, the running balance with the school (who owes whom, total paid out) and weekly and monthly earnings.
+- Month calendar schedule, and a bookings list with search and status filters.
+- Booking details with call and message shortcuts, payment status, and starting, completing or cancelling a lesson.
+- Create and edit appointments: look up the student by traffic code, then pick lesson type, number of classes and price.
+- Earnings reports (weekly, monthly or a custom range) with charts.
+- Expense claims with receipt photo upload, and payouts with cash settlement back to the school.
+- Notification inbox, profile, password change, and dark and light themes.
+
+**School admin**
+- School dashboard with revenue and the balances between the school and its instructors.
+- Instructor management, with a per-instructor report (overview, schedule, earnings).
+- School-wide bookings, and revenue reports with top instructors.
+- Vehicles (create, edit, status and type).
+- Expense approval and reimbursement, payouts and settlements, fuel charges and school settings.
+
+**Both roles**
+- Separate sign-in per role with JWT access and refresh tokens and "remember me".
+- Firebase push notifications that open the related screen when tapped.
+
+### How it's built
+
+- **Clean Architecture:** domain, data and presentation layers. Use cases and repository interfaces sit in the domain layer, and failures come back as dartz `Either` values instead of exceptions.
+- **State, routing and DI:** GetX for state management and routing, get_it for dependency injection.
+- **Networking:** a single Dio client with a `QueuedInterceptorsWrapper`. It attaches the bearer token to every request, and on a 401 it refreshes the token once through the role's refresh endpoint while other requests wait on the same refresh, then retries.
+- **Storage:** tokens live in flutter_secure_storage, with a one-time migration out of GetStorage from earlier versions. get_storage holds preferences such as theme and role.
+- **Notifications:** firebase_messaging and flutter_local_notifications. The app registers its FCM token with the API and reads the unread count and inbox from it.
+- **UI:** Syncfusion calendar and calendar_view, fl_chart, skeletonizer loading states, cached_network_image, image_picker, pull_to_refresh, google_nav_bar, timeago, pinput, flutter_gen for assets.
+
+### How it connects to the backend
+
+The app calls the versioned REST API (`/api/v1`) over HTTPS, the same API the web panel uses. Instructors and admins each have their own login, refresh, logout and profile endpoints (`/instructor/*`, `/admin/*`), so a token only works for its role. Bookings, expenses, payouts, vehicles, reports and notifications go through the shared resource endpoints, where the API's JWT and role guards and its school-scoped checks decide what each user can see. When a booking, payout or expense changes, the API's notification listener stores an inbox entry and sends a push through FCM to the user's registered devices.
 
 ## Architecture
 
 ```mermaid
 flowchart TB
     WEB["Admin panel<br/>Vue 3 + Vite SPA"]
-    APP["Drive Mentor<br/>Flutter app (Android / iOS)"]
+    APP["Drive Mentor<br/>Flutter app (Android / iOS)<br/>GetX · get_it · Dio"]
     GHA["GitHub Actions<br/>build · test · deploy"]
 
     subgraph Server["VPS (Docker)"]
@@ -105,7 +173,7 @@ flowchart TB
 
     WEB -->|HTTPS| FE
     FE -->|/api| HTTP
-    APP -->|HTTPS REST| HTTP
+    APP -->|"HTTPS REST /api/v1<br/>JWT per role (instructor / admin)"| HTTP
     HTTP --> AUTH
     HTTP --> DOMAIN
     HTTP --> MONEY
@@ -140,7 +208,7 @@ There is more detail, including the data model and the settlement flow, in [docs
 | Data | PostgreSQL, Prisma 7 (`@prisma/adapter-pg` driver adapter), versioned Prisma migrations, seed script |
 | Events and notifications | @nestjs/event-emitter, Firebase Admin SDK (FCM multicast) |
 | Web admin panel | Vue 3, Vite, TypeScript, Tailwind CSS 4, shadcn-vue (Reka UI), TanStack Table, Pinia, vee-validate + Zod, Chart.js (vue-chartjs), vue-sonner |
-| Mobile app | Flutter (Dart), GetX, get_it, Dio, flutter_secure_storage, Firebase Messaging + local notifications, fl_chart, Syncfusion calendar |
+| Mobile app | Flutter (Dart ^3.6), Clean Architecture (use cases, repositories, dartz `Either`), GetX (state management + routing), get_it (DI), Dio with queued auth/refresh interceptors, flutter_secure_storage + get_storage, firebase_messaging + flutter_local_notifications, fl_chart, Syncfusion calendar, calendar_view, skeletonizer |
 | Testing | Jest unit tests with a mocked Prisma service, supertest e2e (API). Vitest and Playwright set up on the web panel |
 | Infra and CI/CD | Docker multi-stage builds, nginx (SPA + reverse proxy), GitHub Actions (lint, type-check, test, SSH deploy with health checks) |
 
@@ -150,13 +218,13 @@ I'm the main engineer on DSMS, across the API, the web admin panel and the mobil
 
 - **Backend (NestJS + Prisma):** I wrote the large majority of the commits. That includes the initial schema and seed, the auth module (login, refresh-token rotation, logout), the RBAC setup, and the appointments flow with traffic-code lookup and status management. I also built the expense workflow, earnings and dashboard reports, the commission-split and two-way payout settlement design, school settings with fuel charges, the vehicles module, the FCM notification system, and the Docker and GitHub Actions deployment.
 - **Web admin panel (Vue 3):** I connected it to the API and rebuilt the UI on shadcn-vue. I built the dashboard, the school and instructor overview pages, payouts with balance breakdowns, vehicles, payment status and school settings, plus the CI/CD.
-- **Mobile app (Flutter):** I'm the sole contributor to the Drive Mentor app (instructor and school-admin screens, push notifications).
+- **Mobile app (Flutter):** I'm the sole developer of the Drive Mentor app. All 200 commits in its history (December 2025 to May 2026) are mine, a few of them made through my own automation identity. That covers the architecture, both role apps, the auth and token-refresh layer, and push notifications.
 - A teammate added early pieces: the global validation pipe, a first student module and appointment-creation flow on the API, and the first admin-panel scaffold for creating schools and admins.
 
 ## Status
 
 - **Live:** the admin panel runs at [dsms.everbuild.cloud](https://dsms.everbuild.cloud) (sign-in required).
-- **Timeline:** API work started in December 2025. The web panel followed in February 2026, and most feature work landed between January and April 2026. The mobile app reached v1.1.0 in May 2026, with occasional maintenance commits through August 2026.
+- **Timeline:** API work started in December 2025. The web panel followed in February 2026, and most feature work landed between January and April 2026. The mobile app reached v1.1.0 in May 2026. The API has had occasional maintenance commits through August 2026.
 
 ---
 
